@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <style>
+      body {
+        overflow:hidden;
+        margin:0;
+        padding:0;
+      }
+    </style>
+    <script src="p5.min.js"></script>
+  </head>
+  <body>
+    <button onclick=faster()>Faster</button>
+    <button onclick=slower()>Slower</button>
+    <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var r = 256;
+    var g = 0;
+    var b = 256;
+    var r1 = 256;
+    var g1 = 0;
+    var b1 = 256;
+    var posX = w/2;
+    var posY = h/2;
+    var posX1 = w/2;
+    var posY1 = h/2;
+    var high = 20;
+    var low = -20;
+      function setup() {
+        createCanvas(w,h);
+      }
+      
+      function draw() {
+        var randX = random(low,high);
+        var randY = random(low,high);
+        var randX1 = random(low,high);
+        var randY1 = random(low,high);
+        var randX1 = random(low,high);
+        var randY1 = random(low,high);
+        posX += randX;
+        posY += randY;
+        posX1 += randX1;
+        posY1 += randY1;
+        r1 += randY;
+        g1 = randY;
+        b1 -= randY;
+        r += randY1;
+        g = randY1;
+        b -= randY1;
+        strokeWeight(0);
+        ellipse(posX1,posY1,50,50);
+        fill(r1,g1,b1);
+        
+        rect(posX,posY,50,50);
+        fill(r,g,b);
+        if ((posX > w-50) || (posX < 50))    {
+          posX -= randX;
+          r1 -= randY;
+          g1 = randY;
+          b1 += randY;
+        }
+        else if ((posY > h-50) || (posY < 50)) {
+          posY -= randY;
+          r1 -= randY;
+          g1 = randY;
+          b1 += randY;
+        }
+        
+        if ((posX1 > w-50) || (posX1 < 50))    {
+          posX1 -= randX1;
+          r -= randY1;
+          g = randY1;
+          b += randY1;
+        }
+        else if ((posY1 > h-50) || (posY1 < 50)) {
+          posY1 -= randY1;
+          r -= randY1;
+          g = randY1;
+          b += randY1;
+        }
+      }
+      
+      function faster() {
+        high += 10;
+        low -= 10;
+      }
+      
+      
+      function slower() {
+        low += 10;
+        high -= 10;
+        
+      }
+    </script>
+  </body>
+</html>

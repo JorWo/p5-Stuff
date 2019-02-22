@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <script src = p5.min.js></script>
+    <style>
+      body {
+        overflow:hidden;
+        padding:0;
+        margin-bottom:0;
+        margin-left:0;
+        margin-right:0;
+      }
+      
+      #strokeSize {
+        float:right;
+      }
+      
+    </style>
+  </head>
+  <body>
+    R:<input id = "rRGB" type = "number">
+    G:<input id = "gRGB" type = "number">
+    B:<input id = "bRGB" type = "number">
+    <button id = "colorChange" onclick = rgb()>Change Color</button>
+    <button id ="eraser" onclick = eraser()>[E] Eraser</button>
+    <button onclick = downWeight()>[↓] -</button>
+    <p id = "strokeSize">Size: 3</p>
+    <button onclick = upWeight()>[↑] +</button>
+    <hr>
+  
+    <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var weight = 3;
+    var rValue = 0;
+    var gValue = 0;
+    var bValue = 0;
+    
+    function setup() {
+      createCanvas(w,h);
+      background("white");
+    }
+      
+    function draw() {
+      if (mouseIsPressed) {
+      strokeWeight(weight);
+      
+      line(pmouseX,pmouseY,mouseX,mouseY);
+      }
+    }
+    
+    function keyPressed(){
+      if (keyCode == "38") {
+        weight += 1;
+        document.getElementById('strokeSize').innerHTML = weight;
+      }
+      if (keyCode == "40") {
+        if (weight !== 1) {
+        weight -= 1;
+        document.getElementById('strokeSize').innerHTML = weight;
+      }
+    }
+    if (keyCode == "69"){
+      stroke(color(255,255,255));
+    }
+    if (keyCode == "83") {
+      var x = prompt("What will you name this?");
+      save(x+".jpg");
+    }
+    }
+    
+    function rgb() {
+      var rValue = document.getElementById('rRGB').value;
+      var gValue = document.getElementById('gRGB').value;
+      var bValue = document.getElementById('bRGB').value;
+      stroke(color(rValue,gValue,bValue));
+    }
+    
+    function eraser() {
+      stroke(color(255,255,255));
+    }
+    
+    function downWeight() {
+      if (weight !== 1) {
+        weight -= 1;
+        document.getElementById('strokeSize').innerHTML = "Size: " + weight;
+      }
+    }
+    
+    function upWeight() {
+      weight += 1;
+      document.getElementById('strokeSize').innerHTML = "Size: " + weight;
+    }
+    
+    </script>
+  </body>
+</html>

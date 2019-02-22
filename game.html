@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script src ="p5.min.js"></script>
+    <style>
+      body {
+        margin:0;
+        padding:0;
+        overflow:hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var posX = w/2-50;
+    var posY = h/2-50;
+    var speed = 10;
+    
+      function setup() {
+        createCanvas(w,h);
+        posX = random(w-100);
+        posY = random(h-100);
+      }
+      
+      function draw() {
+        background(255);
+        rect(posX,posY,100,100,10);
+        fill(color('#a7d694'));
+        strokeWeight(0);
+        //87 = w key
+        if (keyIsDown(87) && (posY > 0)) {
+          posY -= speed;
+        }
+        //83 = s key
+        if (keyIsDown(83) && (posY < h-100)) {
+          posY += speed;
+        }
+        //68 = d key
+        if (keyIsDown(68) && (posX < w-100)) {
+          posX += speed;
+        }
+        //65 = a key
+        if (keyIsDown(65) && (posX > 0)) {
+          posX -= speed;
+        }
+      }
+     
+    
+    </script>
+  </body>
+</html>
