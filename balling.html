@@ -25,8 +25,9 @@
     <script>
       var w = window.innerWidth;
       var h = window.innerHeight;
-      var ball = new ball(); //creates new object globally
-      var speed = 40;
+      var ballOne = new ballOne();
+      var ballTwo = new ballTwo();//creates new object globally
+      var speed = 25;
       
       function setup() {
         createCanvas(w,h);
@@ -34,35 +35,68 @@
       
       function draw() {
         background(255);
-        ball.show();
-        ball.move();
+        ballOne.show();
+        ballOne.move();
+        ballTwo.show();
+        ballTwo.move();
       }
       
-      function ball() {
-        this.x = 100;
+      function ballOne() {
+        this.x =100;
         this.y = 100;
         this.show = function() {
           fill(color('red'));
           ellipse(this.x,this.y,100,100);
         };
         this.move = function() {
+          //I key
+        if (keyIsDown(73) && (this.y > 50)) {
+          this.y -= speed;
+          document.getElementById('yPos').innerHTML = "y:"+this.y;
+        }
+        //K key
+        if (keyIsDown(75) && (this.y < h-50)) {
+          this.y += speed;
+          document.getElementById('yPos').innerHTML = "y:"+this.y;
+        }
+        //L key
+        if (keyIsDown(76) && (this.x < w-50)) {
+          this.x += speed;
+          document.getElementById('xPos').innerHTML = "x:"+this.x;
+        }
+        //J key
+        if (keyIsDown(74) && (this.x > 50)) {
+          this.x -= speed;
+          document.getElementById('xPos').innerHTML = "x:"+this.x;
+        }
+        };
+      }
+      
+      function ballTwo() {
+        this.x = 1200;
+        this.y = 500;
+        this.show = function() {
+          fill(color('blue'));
+          ellipse(this.x,this.y,100,100);
+        };
+        this.move = function() {
           //up arrow
-        if (keyIsDown(38) && (this.y > 50)) {
+        if (keyIsDown(87) && (this.y > 50)) {
           this.y -= speed;
           document.getElementById('yPos').innerHTML = "y:"+this.y;
         }
         //down arrow
-        if (keyIsDown(40) && (this.y < h-50)) {
+        if (keyIsDown(83) && (this.y < h-50)) {
           this.y += speed;
           document.getElementById('yPos').innerHTML = "y:"+this.y;
         }
         //right arrow
-        if (keyIsDown(39) && (this.x < w-50)) {
+        if (keyIsDown(68) && (this.x < w-50)) {
           this.x += speed;
           document.getElementById('xPos').innerHTML = "x:"+this.x;
         }
         //left arrow
-        if (keyIsDown(37) && (this.x > 50)) {
+        if (keyIsDown(65) && (this.x > 50)) {
           this.x -= speed;
           document.getElementById('xPos').innerHTML = "x:"+this.x;
         }
