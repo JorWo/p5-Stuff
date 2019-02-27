@@ -26,7 +26,8 @@
       var w = window.innerWidth;
       var h = window.innerHeight;
       var ballOne = new ballOne();
-      var ballTwo = new ballTwo();//creates new object globally
+      var badguy = new badguy();//creates new object globally
+      var d;
       var speed = 25;
       
       function setup() {
@@ -37,8 +38,9 @@
         background(255);
         ballOne.show();
         ballOne.move();
-        ballTwo.show();
-        ballTwo.move();
+        badguy.show();
+        badguy.move();
+        badguy.kill();
       }
       
       function ballOne() {
@@ -72,7 +74,7 @@
         };
       }
       
-      function ballTwo() {
+      function badguy() {
         this.x = 1200;
         this.y = 500;
         this.show = function() {
@@ -101,6 +103,13 @@
           document.getElementById('xPos').innerHTML = "x:"+this.x;
         }
         };
+        this.kill = function() {
+          d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          if (d < 50) {
+            noLoop();
+            window.alert("You LOSE");
+          }
+        }
       }
       
       
