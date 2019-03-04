@@ -9,108 +9,143 @@
         overflow:hidden;
       }
       
-      #xPos {
+      #timer {
         position:fixed;
+        color: yellow;
       }
       
-      #yPos {
-        position:fixed;
-        margin-top:3%;
-      }
+      
     </style>
   </head>
   <body>
-  <p id = 'xPos'>x:100</p>
-  <p id = 'yPos'>y:100</p>
+  <p id = 'timer'>Time:0</p>
+  
     <script>
       var w = window.innerWidth;
       var h = window.innerHeight;
       var ballOne = new ballOne();
       var badguy = new badguy();//creates new object globally
+      var bouncyBall = new bouncyBall();
       var d;
       var speed = 25;
+      var time = 0;
+      
+      setInterval(function(){
+        time += 0.01;
+        document.getElementById('timer').innerHTML = "Time: "+time.toFixed(2);
+        
+      }, 1);
+      
       
       function setup() {
         createCanvas(w,h);
       }
       
       function draw() {
-        background(255);
+        background(0);
         ballOne.show();
         ballOne.move();
         badguy.show();
-        badguy.move();
+        //badguy.move();
         badguy.kill();
+        bouncyBall.show();
+        bouncyBall.move();
+        bouncyBall.kill();
+        
       }
       
       function ballOne() {
-        this.x =100;
+        this.x = w/2+50;
+        this.y = h/2+50;
+        this.show = function() {
+          fill(color('blue'));
+          ellipse(this.x,this.y,100,100);
+        };
+        this.move = function() {
+          //I key
+        if (keyIsDown(87) && (this.y > 50)) {
+          this.y -= speed;
+        }
+        //K key
+        if (keyIsDown(83) && (this.y < h-50)) {
+          this.y += speed;
+        }
+        //L key
+        if (keyIsDown(68) && (this.x < w-50)) {
+          this.x += speed;
+        }
+        //J key
+        if (keyIsDown(65) && (this.x > 50)) {
+          this.x -= speed;
+        }
+        };
+      }
+      
+      function badguy() {
+        this.x = 100;
         this.y = 100;
         this.show = function() {
           fill(color('red'));
           ellipse(this.x,this.y,100,100);
         };
         this.move = function() {
-          //I key
-        if (keyIsDown(73) && (this.y > 50)) {
-          this.y -= speed;
-          document.getElementById('yPos').innerHTML = "y:"+this.y;
-        }
-        //K key
-        if (keyIsDown(75) && (this.y < h-50)) {
-          this.y += speed;
-          document.getElementById('yPos').innerHTML = "y:"+this.y;
-        }
-        //L key
-        if (keyIsDown(76) && (this.x < w-50)) {
-          this.x += speed;
-          document.getElementById('xPos').innerHTML = "x:"+this.x;
-        }
-        //J key
-        if (keyIsDown(74) && (this.x > 50)) {
-          this.x -= speed;
-          document.getElementById('xPos').innerHTML = "x:"+this.x;
-        }
-        };
-      }
-      
-      function badguy() {
-        this.x = 1200;
-        this.y = 500;
-        this.show = function() {
-          fill(color('blue'));
-          ellipse(this.x,this.y,100,100);
-        };
-        this.move = function() {
           //up arrow
         if (keyIsDown(87) && (this.y > 50)) {
           this.y -= speed;
-          document.getElementById('yPos').innerHTML = "y:"+this.y;
         }
         //down arrow
         if (keyIsDown(83) && (this.y < h-50)) {
           this.y += speed;
-          document.getElementById('yPos').innerHTML = "y:"+this.y;
         }
         //right arrow
         if (keyIsDown(68) && (this.x < w-50)) {
           this.x += speed;
-          document.getElementById('xPos').innerHTML = "x:"+this.x;
         }
         //left arrow
         if (keyIsDown(65) && (this.x > 50)) {
           this.x -= speed;
-          document.getElementById('xPos').innerHTML = "x:"+this.x;
         }
         };
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
-          if (d < 50) {
+          if (d <= 50) {
             noLoop();
             window.alert("You LOSE");
           }
         }
       }
+      
+      function bouncyBall() {
+        this.x = 100;
+        this.y = 100;
+        r = 50;
+        xspeed = 40;
+        yspeed = 20;
+        
+        this.show = function() {
+          fill(color('white'));
+          ellipse(this.x,this.y,r,r);
+        };
+        this.move = function() {
+          this.x += xspeed;
+          this.y += yspeed;
+          if (this.x > w - r || this.x < r) {
+            xspeed = -xspeed;
+          }
+          if (this.y > h - r || this.y < r) {
+            yspeed = -yspeed;
+          }
+        }
+        this.kill = function() {
+          d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          if (d <= r) {
+            noLoop();
+            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
+            location.reload();
+          }
+        }
+      };
+      
       
       
       
