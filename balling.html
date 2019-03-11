@@ -27,6 +27,7 @@
       var badguy = new badguy();//creates new object globally
       var bouncyBall = new bouncyBall();
       var bouncyBallTwo = new bouncyBallTwo();
+      var bouncyBallThree = new bouncyBallThree();
       var d;
       var speed = 25;
       var time = 0;
@@ -40,7 +41,7 @@
       
       function setup() {
         bouncyBall.x = random(20,w-100);
-        bouncyBall.y = random(20,h-100);
+        bouncyBall.y = random(20,h-200);
         bouncyBallTwo.x = random(40,w-100);
         bouncyBallTwo.y = random(300,h-100);
         createCanvas(w,h);
@@ -61,14 +62,20 @@
         bouncyBallTwo.move();
         bouncyBallTwo.kill();
         }
+        if (time >= 60) {
+        bouncyBallThree.show();
+        bouncyBallThree.move();
+        bouncyBallThree.kill();
+        }
       }
       
       function ballOne() {
+        var ballColor = 'blue';
         this.x = w/2+50;
         this.y = h/2+50;
         this.show = function() {
-          fill(color('blue'));
-          ellipse(this.x,this.y,100,100);
+          fill(color(ballColor));
+          ellipse(this.x,this.y,70,70);
         };
         this.move = function() {
           //I key
@@ -89,9 +96,11 @@
         }
         if (keyIsDown(16)) {
           speed = 40;
+          ballColor = 'yellow';
         }
         else {
           speed = 25;
+          ballColor = 'blue';
         }
         };
       }
@@ -154,8 +163,8 @@
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
           if (d <= r) {
-            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             noLoop();
+            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             location.reload();
           }
         }
@@ -185,8 +194,39 @@
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
           if (d <= r) {
-            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             noLoop();
+            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
+            location.reload();
+          }
+        }
+      };
+      
+      function bouncyBallThree() {
+        this.x = 1000;
+        this.y = 100;
+        r = 50;
+        xspeed3 = 35;
+        yspeed3 = 17.5;
+        
+        this.show = function() {
+          fill(color('white'));
+          ellipse(this.x,this.y,r,r);
+        };
+        this.move = function() {
+          this.x += xspeed3;
+          this.y += yspeed3;
+          if (this.x > w - r || this.x < r) {
+            xspeed3 = (-xspeed3);
+          }
+          if (this.y > h - r || this.y < r) {
+            yspeed3 = (-yspeed3);
+          }
+        }
+        this.kill = function() {
+          d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          if (d <= r) {
+            noLoop();
+            window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             location.reload();
           }
         }
