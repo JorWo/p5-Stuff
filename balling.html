@@ -28,7 +28,11 @@
       var bouncyBall = new bouncyBall();
       var bouncyBallTwo = new bouncyBallTwo();
       var bouncyBallThree = new bouncyBallThree();
+      var bullet = new bullet();
+      var bulletKill = 0;
+      var bulletKill2 = 0;
       var d;
+      var m;
       var speed = 25;
       var time = 0;
       
@@ -48,24 +52,38 @@
       }
       
       function draw() {
+        var m  = millis();
         background(0);
         ballOne.show();
         ballOne.move();
+        ballOne.shoot();
         //badguy.show();
         //badguy.move();
         //badguy.kill();
         bouncyBall.show();
         bouncyBall.move();
         bouncyBall.kill();
-        if (time >= 20) {
+        if ((time >= 20) || (bulletKill == 1)) {
         bouncyBallTwo.show();
         bouncyBallTwo.move();
         bouncyBallTwo.kill();
         }
-        if (time >= 60) {
+        if ((time >= 60 || bulletKill2 == 1))  {
         bouncyBallThree.show();
         bouncyBallThree.move();
         bouncyBallThree.kill();
+        }
+      }
+      
+      
+
+      function bullet() {
+        this.show = function() {
+        this.x = mouseX;
+        this.y = mouseY;
+        line(ballOne.x,ballOne.y,mouseX,mouseY);
+        stroke(color('yellow'));
+        
         }
       }
       
@@ -103,7 +121,15 @@
           ballColor = 'blue';
         }
         };
+        this.shoot = function() {
+          if (mouseIsPressed) {
+            bullet.show();
+          }
+          
+        };
       }
+      
+      
       
       function badguy() {
         this.x = 100;
@@ -140,6 +166,7 @@
       }
       
       function bouncyBall() {
+        var ballColor = 'white';
         this.x = 30;
         this.y = 30;
         r = 50;
@@ -147,7 +174,7 @@
         yspeed = 10;
         
         this.show = function() {
-          fill(color('white'));
+          fill(color(ballColor));
           ellipse(this.x,this.y,r,r);
         };
         this.move = function() {
@@ -160,8 +187,19 @@
             yspeed = (-yspeed);
           }
         }
+        this.disappear = function() {
+          ballColor = 'red';
+          xspeed = 0;
+          yspeed = 0;
+          bulletKill = 1;
+          
+        }
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          d2 = dist(this.x,this.y,bullet.x,bullet.y);
+          if (d2 <= r) {
+            this.disappear();
+          }
           if (d <= r) {
             noLoop();
             window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
@@ -171,6 +209,7 @@
       };
       
       function bouncyBallTwo() {
+        var ballColor = 'white';
         this.x = 1000;
         this.y = 200;
         r = 50;
@@ -178,7 +217,7 @@
         yspeed2 = 15;
         
         this.show = function() {
-          fill(color('white'));
+          fill(color(ballColor));
           ellipse(this.x,this.y,r,r);
         };
         this.move = function() {
@@ -190,18 +229,29 @@
           if (this.y > h - r || this.y < r) {
             yspeed2 = (-yspeed2);
           }
-        }
+        };
+        this.disappear = function() {
+          ballColor = 'red';
+          bulletKill2 = 1;
+          xspeed2 = 0;
+          yspeed2 = 0;
+        };
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          d2 = dist(this.x,this.y,bullet.x,bullet.y);
+          if (d2 <= r) {
+            this.disappear();
+          }
           if (d <= r) {
             noLoop();
             window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             location.reload();
           }
-        }
+        };
       };
       
       function bouncyBallThree() {
+        var ballColor = 'white';
         this.x = 1000;
         this.y = 100;
         r = 50;
@@ -209,7 +259,7 @@
         yspeed3 = 17.5;
         
         this.show = function() {
-          fill(color('white'));
+          fill(color(ballColor));
           ellipse(this.x,this.y,r,r);
         };
         this.move = function() {
@@ -221,9 +271,18 @@
           if (this.y > h - r || this.y < r) {
             yspeed3 = (-yspeed3);
           }
-        }
+        };
+        this.disappear = function() {
+          ballColor = 'red';
+          xspeed3 = 0;
+          yspeed3 = 0;
+        };
         this.kill = function() {
           d = dist(this.x,this.y,ballOne.x,ballOne.y);
+          d2 = dist(this.x,this.y,bullet.x,bullet.y);
+          if (d2 <= r) {
+            this.disappear();
+          }
           if (d <= r) {
             noLoop();
             window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
