@@ -24,10 +24,6 @@
       var w = window.innerWidth;
       var h = window.innerHeight;
       var ballOne = new ballOne();
-      var badguy = new badguy();//creates new object globally
-      var bouncyBall = new bouncyBall();
-      var bouncyBallTwo = new bouncyBallTwo();
-      var bouncyBallThree = new bouncyBallThree();
       var bullet = new bullet();
       var bulletKill = 0;
       var bulletKill2 = 0;
@@ -35,6 +31,8 @@
       var m;
       var speed = 25;
       var time = 0;
+      var addBadGuys = 5;
+      var badGuys = [];
       
       setInterval(function(){
         time += 0.01;
@@ -44,11 +42,10 @@
       
       
       function setup() {
-        bouncyBall.x = random(20,w-100);
-        bouncyBall.y = random(20,h-200);
-        bouncyBallTwo.x = random(40,w-100);
-        bouncyBallTwo.y = random(300,h-100);
         createCanvas(w,h);
+        for (let i = 0; i < addBadGuys; i++) {
+          badGuys.push(new bouncyBalls());
+        }
       }
       
       function draw() {
@@ -57,35 +54,24 @@
         ballOne.show();
         ballOne.move();
         ballOne.shoot();
-        //badguy.show();
-        //badguy.move();
-        //badguy.kill();
-        bouncyBall.show();
-        bouncyBall.move();
-        bouncyBall.kill();
-        if ((time >= 20) || (bulletKill == 1)) {
-        bouncyBallTwo.show();
-        bouncyBallTwo.move();
-        bouncyBallTwo.kill();
-        }
-        if ((time >= 60 || bulletKill2 == 1))  {
-        bouncyBallThree.show();
-        bouncyBallThree.move();
-        bouncyBallThree.kill();
+        
+        for (let i = 0; i < badGuys.length; i++) {
+          badGuys[i].move();
+          badGuys[i].display();
+          badGuys[i].destroy();
         }
       }
       
-      
-
       function bullet() {
         this.show = function() {
         this.x = mouseX;
         this.y = mouseY;
         line(ballOne.x,ballOne.y,mouseX,mouseY);
         stroke(color('yellow'));
-        
         }
       }
+      
+      
       
       function ballOne() {
         var ballColor = 'blue';
@@ -129,84 +115,48 @@
         };
       }
       
-      
-      
-      function badguy() {
-        this.x = 100;
-        this.y = 100;
-        this.show = function() {
-          fill(color('red'));
-          ellipse(this.x,this.y,100,100);
-        };
-        this.move = function() {
-          //up arrow
-        if (keyIsDown(87) && (this.y > 50)) {
-          this.y -= speed;
-        }
-        //down arrow
-        if (keyIsDown(83) && (this.y < h-50)) {
-          this.y += speed;
-        }
-        //right arrow
-        if (keyIsDown(68) && (this.x < w-50)) {
-          this.x += speed;
-        }
-        //left arrow
-        if (keyIsDown(65) && (this.x > 50)) {
-          this.x -= speed;
-        }
-        };
-        this.kill = function() {
-          d = dist(this.x,this.y,ballOne.x,ballOne.y);
-          if (d <= 50) {
-            noLoop();
-            window.alert("You LOSE");
-          }
-        }
+      class bouncyBalls {
+        constructor() {
+        this.x = random(width);
+        this.y = random(height);
+        this.radius = 50;
+        this.xspeed = 20;
+        this.yspeed = 10;
+        this.ballColor = 'white';
       }
-      
-      function bouncyBall() {
-        var ballColor = 'white';
-        this.x = 30;
-        this.y = 30;
-        r = 50;
-        xspeed = 20;
-        yspeed = 10;
-        
-        this.show = function() {
-          fill(color(ballColor));
-          ellipse(this.x,this.y,r,r);
-        };
-        this.move = function() {
-          this.x += xspeed;
-          this.y += yspeed;
-          if (this.x > w - r || this.x < r) {
-            xspeed = (-xspeed);
+      move() {
+        this.x += this.xspeed;
+        this.y += this.yspeed;
+        if (this.x > w - this.radius || this.x < this.radius) {
+            this.xspeed = (-this.xspeed);
           }
-          if (this.y > h - r || this.y < r) {
-            yspeed = (-yspeed);
+          if (this.y > h - this.radius || this.y < this.radius) {
+            this.yspeed = (-this.yspeed);
           }
-        }
-        this.disappear = function() {
-          ballColor = 'red';
-          xspeed = 0;
-          yspeed = 0;
-          bulletKill = 1;
-          
-        }
-        this.kill = function() {
-          d = dist(this.x,this.y,ballOne.x,ballOne.y);
-          d2 = dist(this.x,this.y,bullet.x,bullet.y);
-          if (d2 <= r) {
-            this.disappear();
+      }
+      display() {
+        ellipse(this.x, this.y, this.radius, this.radius);
+        fill(color(this.ballColor));
+      }
+      destroy() {
+        var d = dist(this.x,this.y,ballOne.x,ballOne.y);
+        var d2 = dist(this.x,this.y,bullet.x,bullet.y);
+          if ((d2 <= this.radius) && ((this.xspeed !== 0) && (this.yspeed !== 0))) {
+            this.x = -1000;
+            this.y = -1000;
+            badGuys.push(new bouncyBalls());
           }
-          if (d <= r) {
+          if ((d <= this.radius) && (time > 3)) {
             noLoop();
             window.alert("You LOSE. You survived "  + time.toFixed(2) + " seconds");
             location.reload();
           }
-        }
-      };
+      }
+      }
+      
+      
+      
+      
       
       function bouncyBallTwo() {
         var ballColor = 'white';
