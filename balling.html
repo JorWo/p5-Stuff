@@ -144,6 +144,8 @@
           if ((d2 <= this.radius) && ((this.xspeed !== 0) && (this.yspeed !== 0))) {
             this.x = -1000;
             this.y = -1000;
+            //this.xspeed = 0;
+            //this.yspeed = 0;
             badGuys.push(new bouncyBalls());
           }
           if ((d <= this.radius) && (time > 3)) {
