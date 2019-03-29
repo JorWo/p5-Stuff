@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script src ="p5.min.js"></script>
+    <script src='jumper.js'></script>
+    <script src='barrier.js'></script>
+    <style>
+      body {
+        margin:0;
+        padding:0;
+        overflow:hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    
+    function setup() {
+      createCanvas(w,h);
+    }
+      
+    function draw() {
+      background(0);
+      jumper.show();
+      jumper.update();
+      jumper.move();
+      barrier.show();
+      barrier.update();
+    }
+    
+    </script>
+  </body>
+</html>
