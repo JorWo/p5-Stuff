@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <script src="p5.min.js"></script>
+    <script src="p5.collide2d.min.js"></script>
+    
+    <style>
+      body {
+        margin:0;
+        padding:0;
+        overflow:hidden;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var player = new player();
+    var addBarriers = 5;
+    var barriersArray = [];
+    
+      function setup() {
+        createCanvas(w,h);
+        for (var i = 0; i < addBarriers; i++) {
+          barriersArray.push(new barriers());
+        }
+      }
+      
+      function draw() {
+        background(255);
+        player.show();
+        player.update();
+        player.move();
+        
+        for (var i = 0; i < barriersArray.length; i++) {
+          barriersArray[i].show();
+          barriersArray[i].collision();
+        }
+      }
+      
+      function player() {
+        this.x = 0;
+        this.y = h;
+        this.w = 50;
+        this.h = 50;
+        this.gravity = 0.6; //The force of gravity
+        this.lift = -20; //Opposing the force of gravity
+        this.velocity = 0; //Velocity of player
+      
+        this.show = function() {
+          rect(this.x,this.y,this.w,this.h);
+          fill(color('black'));
+        }
+        
+        this.update = function() {
+          this.velocity += this.gravity; //Gravity applied when not jumping
+          this.y += this.velocity;
+          this.velocity *= 0.98; //air resistance
+          if (this.y > h-this.h) { //jumper hits the floor
+            this.y = h-this.h;
+            this.velocity = 0;
+          }
+          if (this.y < this.h) {
+            this.y = this.h;
+            this.velocity = 0;
+          }
+        }
+        
+        this.jump = function() {
+          this.velocity += this.lift; //Jumping function
+        }
+        
+        this.move = function() {
+          if (keyIsDown(68) && this.x < w-this.w) {
+            this.x += 5;
+          }
+          if ((keyIsDown(68) && keyIsDown(16)) && (this.x < w-this.w)) {
+            this.x += 7.5;
+          }
+          if (keyIsDown(65) && this.x > 0) {
+            this.x -= 5;
+          }
+          if ((keyIsDown(65) && keyIsDown(16)) && (this.x > 0)) {
+            this.x -= 7.5;
+          }
+        }
+      };
+      
+      function keyPressed() {
+        if ((keyCode === 32) && (player.y > h-51 )) {
+          player.jump();
+        }
+      }
+      
+      
+      class barriers {
+        constructor() {
+        this.x = random(w);
+        this.y = random(h);
+        this.w = 200;
+        this.h = 5;
+        this.hitBarrier;
+        }
+        show() {
+          rect(this.x,this.y,this.w,this.h);
+          fill(color('black'));
+        }
+        collision() {
+          /*this.hitBarrier = collideRectRect(this.x,this.y,this.w,this.h,player.x,player.y,player.w,player.h);
+          if */
+        }
+      }
+    </script>
+  </body>
+</html>
